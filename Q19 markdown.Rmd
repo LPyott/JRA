@@ -1,0 +1,38 @@
+---
+title: "Untitled"
+author: "WCU/JRA Team"
+date: "5/5/2020"
+output: word_document
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = FALSE)
+
+setwd("C:/DATA/CSV")
+jra <- read.csv("jra.csv")
+
+library(tidyverse)
+library(dplyr)
+library(kableExtra)
+
+#Imma wrangle this here data
+#HC1 x30=Yes is respondents who identified as HC
+HC1 <-filter(jra, X30=="Yes")
+#HC2 x31=yes is respodents who live with a HC
+HC2 <-filter(jra, X31=="Yes")
+#HC is the union of HC! and HC2 removing duplicates
+HC <- union(HC1, HC2)
+#Surveys who responded yes to both questions
+HCboth <- filter(HC, X30=="Yes" & X31=="Yes")
+
+library(splitstackshape)
+Q19 <- cSplit(HC, "X19", ",")
+T19_1<-table(Q19$X19_1)
+T19_2 <-table(Q19$X19_2)
+T19_3 <-table(Q19$X19_3)
+kable(T19_1)
+kable(T19_2)
+kable(T19_3)
+```
+
+
